@@ -1,0 +1,39 @@
+loki:
+  auth_enabled: false
+
+  storage:
+    type: filesystem
+
+  schema_config:
+    configs:
+      - from: 2020-10-24
+        store: boltdb-shipper
+        object_store: filesystem
+        schema: v11
+        index:
+          prefix: index_
+          period: 24h
+
+  compactor:
+    working_directory: /var/loki/compactor
+    shared_store: filesystem
+
+  limits_config:
+    retention_period: 7d
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClassName: "standard"
+
+service:
+  type: ClusterIP
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+
+prometheus:
+  enabled: false

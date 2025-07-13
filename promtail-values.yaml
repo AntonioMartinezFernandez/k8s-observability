@@ -1,0 +1,30 @@
+config:
+  clients:
+    - url: http://loki:3100/loki/api/v1/push
+
+  positions:
+    filename: /var/log/positions.yaml
+
+  snippets:
+    pipeline_stages:
+      - docker: {}
+
+  scrape_configs:
+    - job_name: system
+      static_configs:
+        - targets:
+            - localhost
+          labels:
+            job: varlogs
+            __path__: /var/log/**/*.log
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+
+tolerations:
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoSchedule"
